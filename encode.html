@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Encoder</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background: #5a67d8;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #434190;
+        }
+        .result-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            width: 48%;
+        }
+        .result {
+            background: #f3f3f3;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            word-wrap: break-word;
+            font-size: 14px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Text Encoding Tool</h1>
+        <label for="textInput">Enter text:</label>
+        <input type="text" id="textInput" placeholder="Enter text">
+        <button type="button" onclick="encodeText()">Encode</button>
+        
+        <div class="result-container">
+            <div class="column">
+                <p><strong>URLEncoded Text:</strong></p>
+                <p id="encodedText" class="result"></p>
+                <p><strong>Base64 Text:</strong></p>
+                <p id="BencodedText" class="result"></p>
+                <p><strong>HTMLEncoded Text:</strong></p>
+                <p id="HTMLEncodedText" class="result"></p>
+            </div>
+            <div class="column">
+                <p><strong>URLDecoded Text:</strong></p>
+                <p id="decodedText" class="result"></p>
+                <p><strong>Decoded Base64 Text:</strong></p>
+                <p id="BdecodedText" class="result"></p>
+                <p><strong>HTMLDecoded Text:</strong></p>
+                <p id="HTMLDecodedText" class="result"></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function encodeText() {
+            var inputText = document.getElementById("textInput").value;
+            
+            // URL Encoding
+            document.getElementById("encodedText").textContent = encodeURIComponent(inputText);
+            document.getElementById("decodedText").textContent = decodeURIComponent(encodeURIComponent(inputText));
+            
+            // Base64 Encoding
+            try {
+                document.getElementById("BencodedText").textContent = btoa(inputText);
+                document.getElementById("BdecodedText").textContent = atob(btoa(inputText));
+            } catch (e) {
+                document.getElementById("BdecodedText").textContent = "Invalid Base64 input";
+            }
+            
+            // HTML Encoding
+            var HTMLEncodedText = inputText.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
+            document.getElementById("HTMLEncodedText").textContent = HTMLEncodedText;
+            
+            // HTML Decoding
+            var textArea = document.createElement("textarea");
+            textArea.innerHTML = HTMLEncodedText;
+            document.getElementById("HTMLDecodedText").textContent = textArea.value;
+        }
+    </script>
+</body>
+</html>
